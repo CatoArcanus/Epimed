@@ -69,7 +69,8 @@
 				{{ Form::open (array('url' => '/forms/batch-history/'.$batch->id.'/update/approve', 'method' => 'put', 'class' => 'form-horizontal', 'role' => 'form')) }}	
 				@if(is_null($generation->approval_id))
 				
-					{{ Form::hidden('generation', $generation->id, array('readonly' => '')) }}
+					{{ Form::hidden('batchGeneration', $generation->id, array('readonly' => '')) }}
+					{{ Form::hidden('batchPouchLabel', $generation->pouchLabel[0]->getKey(), array('readonly' => '')) }}
 					<div class="form-group">
 						{{ Form::label('approved_by', 			'Approved For Use By:',							array('class' => 'col-sm-2 control-label form-inline' )) }}
 						<div class="col-sm-4">

@@ -211,6 +211,7 @@ class BatchFormController extends BaseController {
 				var_dump($input);
 				// validate
 				$batchPouchLabel = BatchPouchLabel::where('id', $input['batchPouchLabel'])->firstOrFail();
+				$batchGeneration = BatchGeneration::where('id', $input['batchGeneration'])->firstOrFail();
 				$rules = array(
 					'approved_by' 	=> 'required|exists:user,username',
   					'approved_date' => 'required|date',
