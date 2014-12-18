@@ -61,19 +61,6 @@
 				</div>
 			</div>		
 			
-			{{--
-			<div id="dynamic_pouch">
-
-			</div>
-			
-			<div class="form-group">
-				<div class="col-sm-1 col-sm-offset-10 col-xs-offset-8">
-					<a title="click to add another pouch generation" id="add_pouch_generation_btn" class="add_generation_btn btn btn-warning" data-counter="1" data-name="pouch">
-						<i class="fa fa-plus-circle"></i>
-					</a>
-				</div>
-			</div>			
-			--}}
 			<hr>
 			
 			<div id="carton_label" class="text-primary text-center">
@@ -94,19 +81,6 @@
 				</div>
 			</div>			
 
-			{{--
-			<div id="dynamic_carton">
-
-			</div>
-			
-			<div class="form-group">
-				<div class="col-sm-1 col-sm-offset-10 col-xs-offset-8">
-					<a title="click to add another carton generation" id="add_carton_generation_btn" class="add_generation_btn btn btn-warning" data-counter="1" data-name="carton">
-						<i class="fa fa-plus-circle"></i>
-					</a>
-				</div>
-			</div>			
-			--}}
 			<br>
 			
 			<div class="form-actions">
@@ -117,5 +91,4 @@
 			{{ Form::close (); }}
 		
 	</div>
- 
 @stop
