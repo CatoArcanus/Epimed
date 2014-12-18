@@ -110,7 +110,7 @@ abstract class BaseModel extends Eloquent
         //  Otherwise, we'll just insert them.
         if ($this->exists)
         {
-            $saved = $this->performUpdate($query);
+            $saved = $this->performUpdate($query, $options);
         }
  
         // If the model is brand new, we'll insert it into our database
@@ -119,7 +119,7 @@ abstract class BaseModel extends Eloquent
         // managed by the database.
         else
         {
-            $saved = $this->performInsert($query);
+            $saved = $this->performInsert($query, $options);
  
             $this->exists = $saved;
         }
