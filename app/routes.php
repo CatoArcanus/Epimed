@@ -25,6 +25,17 @@ Route::get ('/', 		array('as' => 'base', 	'uses' => 'HomeController@index'));
 Route::post('login', 	array('as' => 'login', 	'uses' => 'HomeController@login'))->before ('not_authd')->before ('csrf');
 Route::get ('logout', 	array('as' => 'logout', 'uses' => 'HomeController@logout'));	
 
+/*
+|--------------------------------------------------------------------------
+| Batch Form Group
+| This is weird becuase we will have multiple edit and update pages based
+| on the stage that the batch is currently in.
+|--------------------------------------------------------------------------
+| user/profile
+| user/edit_profile
+| 
+*/
+
 //BatchForm Group
 Route::group (array('before' => 'auth', 'prefix' => 'forms'), function() {	
 	// users group
@@ -38,24 +49,6 @@ Route::group (array('before' => 'auth', 'prefix' => 'forms'), function() {
 		Route::get ('/{id}/edit/{stage}', 	array( 'as' => 'edit_batch_history', 		'uses' => 'BatchFormController@edit'));
 		Route::put ('/{id}/update/{stage}', array( 'as' => 'update_batch_history', 		'uses' => 'BatchFormController@update'));		
 		//Route::delete('/delete', 			array( 'as' => 'delete_batch_history', 		'uses' => 'BatchFormController@destroy'));
-		
-		//Route::post('/store', 		array( 'as' => 'store_batch_history', 			'uses' => 'BatchFormController@store'));
-		
-		//Route::get ('/start', 			array( 'as' => 'start_batch_history', 			'uses' => 'BatchFormController@start'));
-		//Route::get ('/start/{id}', 		array( 'as' => 'start#_batch_history', 			'uses' => 'BatchFormController@start'));
-		/*
-		Route::get ('generate/{id}', 	array( 'as' => 'generate_batch_history', 		'uses' => 'BatchFormController@generate'));
-		Route::get ('approve/{id}', 	array( 'as' => 'approve_batch_history', 		'uses' => 'BatchFormController@approve'));
-		Route::get ('destroy/{id}', 	array( 'as' => 'destroy_batch_history', 		'uses' => 'BatchFormController@destroy'));
-		Route::get ('burst/{id}', 		array( 'as' => 'burst_batch_history', 			'uses' => 'BatchFormController@burst'));
-		Route::get ('inspect/{id}', 	array( 'as' => 'inspect_batch_history', 		'uses' => 'BatchFormController@inspect'));
-		Route::get ('sterlize/{id}', 	array( 'as' => 'sterlize_batch_history', 		'uses' => 'BatchFormController@sterlize'));
-		Route::get ('release/{id}', 	array( 'as' => 'release_batch_history', 		'uses' => 'BatchFormController@release'));
-		*/
-
-		
-		//Route::get ('/{id}/edit', 	array( 'as' => 'edit_user', 	'uses' => 'UserController@edit'));
-		//Route::put ('/{id}/update', array( 'as' => 'update_user', 	'uses' => 'UserController@update'));
 	});	
 });
 
@@ -69,7 +62,6 @@ Route::group (array('before' => 'auth', 'prefix' => 'users'), function() {
 	//Route::get ('/{id}/edit', 	array( 'as' => 'edit_user', 	'uses' => 'UserController@edit'));
 	//Route::put ('/{id}/update', array( 'as' => 'update_user', 	'uses' => 'UserController@update'));
 	//Route::delete('/delete', 	array( 'as' => 'delete_user', 	'uses' => 'UserController@destroy'));
-	
 });
 
 
