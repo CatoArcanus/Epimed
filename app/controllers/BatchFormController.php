@@ -243,13 +243,11 @@ class BatchFormController extends BaseController {
 			case 'destroy':
 				var_dump($input);
 				// validate
-				$batchPouchLabel = BatchPouchLabel::where('id', $input['batchPouchLabel'])->firstOrFail();
 				$rules = array(
 					'destroyed_by' 	 => 'required|exists:user,username',
   					'destroyed_date' => 'required|date',
   					'destroyed_#' 	 => 'required|integer'
 				);
-				die();
 
 				//Process the validator based on the rules
 				$validator = Validator::make(Input::all(), $rules);
@@ -261,12 +259,29 @@ class BatchFormController extends BaseController {
 						->with ('flash_notice', 'Batch Form destruction failed '.$messages)
 						->with('flash_type', 'failure');
 				} else {
-					// Get an employee for approvals
-					$user = User::where('username', $input['approved_by'])->firstOrFail();
+			
+					// Get an employee for destruction
+					$user = User::where('username', $input['destroyed_by'])->firstOrFail();
 					$employee = $user->employee;
-					$batchGeneration->used = $input['approved_#'];
-					$batchGeneration->save();
-					$batchGeneration->approve($employee->id, $input['approved_date']);
+					$destruction = new BatchDestruction;
+					$destruction->destroyed_by = $employee->id;
+					$destruction->date = $input['destroyed_date'];
+					$destruction->amount = $input['destroyed_#'];
+					$destruction->save();
+					
+					if(array_key_exists('batchPouchLabel', $input))
+					{
+						$batchPouchLabel = BatchPouchLabel::where('id', $input['batchPouchLabel'])->firstOrFail();
+						$batchPouchLabel->destruction_id = $destruction->id;
+						$batchPouchLabel->save();					
+					}
+					if(array_key_exists('batchCartonLabel', $input))
+					{
+						$batchCartonLabel = BatchCartonLabel::where('id', $input['batchCartonLabel'])->firstOrFail();
+						$batchCartonLabel->destruction_id = $destruction->id;
+						$batchCartonLabel->save();					
+					}
+										
 					// redirect			
 					return Redirect::to('forms/batch-history/'.$batch->id.'/edit/approve')
 						->with ('flash_notice', 'Destruction Created Successfully')
