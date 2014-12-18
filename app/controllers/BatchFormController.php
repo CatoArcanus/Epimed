@@ -68,9 +68,14 @@ class BatchFormController extends BaseController {
 			// store BatchForm
 			$input = Input::all();
 			$product = Product::where ('alphanumeric', $input['catalog_#'])->firstOrFail();
+			$revision = Revision::firstOrCreate(array('number' => 1, 'active' => true));
+
 			$batch = new Batch;
-			$batch->product_id = $product->id;
+
+			$batch->product_id = $product->getKey();
+			$batch->revision_id = $revision->getKey();
 			$batch->lot = $input['final_lot_#'];
+
 			$batch->save();
 					
 			// redirect			
