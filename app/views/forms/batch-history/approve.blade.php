@@ -67,7 +67,7 @@
 					</div>
 				{{ Form::close (); }}
 				{{ Form::open (array('url' => '/forms/batch-history/'.$batch->id.'/update/approve', 'method' => 'put', 'class' => 'form-horizontal', 'role' => 'form')) }}	
-				@if(is_null($generation->approval_id)))
+				@if(is_null($generation->approval_id))
 				
 					{{ Form::hidden('generation', $generation->id, array('readonly' => '')) }}
 					<div class="form-group">
