@@ -31,6 +31,7 @@ class ProductBuildFormController extends BaseController
 
 	/**
 	 * Show the form for creating a new resource.
+	 *
 	 * @return Response
 	 */
 	public function create() 
@@ -40,6 +41,7 @@ class ProductBuildFormController extends BaseController
 	
 	/**
 	 * Show the form for creating a new resource.
+	 *
 	 * @return Response
 	 */
 	public function start() 
@@ -49,6 +51,7 @@ class ProductBuildFormController extends BaseController
 	
 	/**
 	 * Store a newly created resource in storage.
+	 *
 	 * @return Response
 	 */
 	public function store()
@@ -96,8 +99,10 @@ class ProductBuildFormController extends BaseController
 	
 	/**
 	 * Display the specified resource.
-	 * @param  int  $id
-	 * @return Response
+	 *
+	 * @param 	int 	$id
+	 *
+	 * @return 	Response
 	 */
 	public function show($id)
 	{
@@ -113,33 +118,37 @@ class ProductBuildFormController extends BaseController
 	
 	/**
 	 * Show the form for editing the specified resource.
-	 * @param  int  $id
-	 * @param  string  $stage
-	 * @return Response
+	 *
+	 * @param 	int 	$id
+	 * @param 	string 	$stage
+	 *
+	 * @return 	Response
 	 */
 	public function edit($id, $stage)
 	{
-		return 'Not Yet Implemented';
+		$pbf = ProductBuildForm::where('id', '=', $id)->first();
+
+		if(is_null($pbf))
+			return Redirect::to('forms/product-build-form')
+				->with('flash_notice', 'Could not find the specified Product Build Form')
+				->with('flash_type', 'failure');
+
+		return View::make('forms/product-build-form/' . $stage, array('pbf' => $pbf));
 	}
 	
 	/**
 	 * Display the specified resource.
-	 * @param  int  $id
-	 * @return Response
+	 *
+	 * @param 	int 		$id
+	 * @param 	string 	$stage
+	 *
+	 * @return 	Response
 	 */
 	public function update($id, $stage)
 	{
-		return 'Not Yet Implemented';
-	}
-
-	
-	/**
-	 * Remove the specified resource from storage.
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy()
-	{
-		return 'Not Yet Implemented';
+		// Redirect		
+		return Redirect::to('forms/product-build-form')
+			->with('flash_notice', 'Product Build Form Created Successfully')
+			->with('flash_type', 'success');
 	}	
 }

@@ -56,11 +56,11 @@ Route::group (array('before' => 'auth', 'prefix' => 'forms'), function()
 	Route::group (array('prefix' => 'product-build-form'), function()
 	{
 		Route::get ('/', 					array( 'as' => 'index_product_build_form',	'uses' => 'ProductBuildFormController@index'));
-		Route::get ('/create', 				array( 'as' => 'create_product_build_form', 'uses' => 'ProductBuildFormController@create'));
 		Route::get ('/start', 				array( 'as' => 'start_product_build_form',	'uses' => 'ProductBuildFormController@start'));
 		Route::post('/store',				array( 'as' => 'store_product_build_form',	'uses' => 'ProductBuildFormController@store'));
 		Route::get ('/{id}', 				array( 'as' => 'show_product_build_form', 	'uses' => 'ProductBuildFormController@show'));	
-		//Route::delete('/delete', 			array( 'as' => 'delete_product_build_form', 		'uses' => 'ProductBuildForm@destroy'));
+		Route::get ('/{id}/edit/{stage}', 	array( 'as' => 'edit_product_build_form', 	'uses' => 'ProductBuildFormController@edit'));
+		Route::put ('/{id}/update/{stage}', array( 'as' => 'update_product_build_form', 'uses' => 'ProductBuildFormController@update'));
 	});	
 });
 
