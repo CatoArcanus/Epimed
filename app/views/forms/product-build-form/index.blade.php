@@ -1,0 +1,54 @@
+@extends('layouts.masterLayout')
+
+@section('pagetitle')
+	Epimed - Product Build Form
+@stop
+
+@section('content')
+	<div class="bg-grey-warm text-primary">		
+		<div id="form_title" class="text-center">
+			<h4>PRODUCT BUILD FORMS</h4>
+		</div>		
+	
+		<div id="form_subtitle" class="text-center">
+			<h6>IHR-3034</h4>
+		</div>		
+	</div>
+	<hr>
+	<div>
+		<p class="pull-right">
+			<a href="{{route('start_product_build_form')}}" class="btn btn-warning"><i class="fa fa-plus-circle"></i> Start New Product Build Form</a>
+		<p>	
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Final Product</th>
+					<th>Catalog #</th>
+					<th>% Complete</th>
+					<th>---</th>					
+				</tr>
+			</thead>
+			<tbody>
+				@foreach ($pbfs as $pbf)
+					<?php $bom = $pbf->billOfMaterials; ?>
+					<?php $product = $bom->product; ?>
+					<tr>
+						<td>
+							{{ $product->name }} 
+						</td>
+						<td>
+							{{ $product->alphanumeric }}
+						</td>
+						<td>
+
+						</td>
+						<td>
+
+						</td>
+					</tr>
+				@endforeach
+
+			</tbody>
+		</table>		
+	</div> 
+@stop
