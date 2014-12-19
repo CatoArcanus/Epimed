@@ -12,7 +12,7 @@
  */
 
 //* View Controller Class *//
-class BillofMaterialsController extends BaseController
+class BillOfMaterialsController extends BaseController
 {
 	/**
 	 * Display a listing of the resource.

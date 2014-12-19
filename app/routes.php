@@ -36,19 +36,31 @@ Route::get ('logout', 	array('as' => 'logout', 'uses' => 'HomeController@logout'
 | 
 */
 
-//BatchForm Group
-Route::group (array('before' => 'auth', 'prefix' => 'forms'), function() {	
-	// users group
-	Route::group (array('prefix' => 'batch-history'), function() {
+// Form Group
+Route::group (array('before' => 'auth', 'prefix' => 'forms'), function()
+{	
+	// Batch History Group
+	Route::group (array('prefix' => 'batch-history'), function()
+	{
+		Route::get ('/', 					array( 'as' => 'index_batch_history', 	'uses' => 'BatchFormController@index'));
+		Route::get ('/create', 				array( 'as' => 'create_batch_history', 	'uses' => 'BatchFormController@create'));
+		Route::get ('/start', 				array( 'as' => 'start_batch_history', 	'uses' => 'BatchFormController@start'));
+		Route::post('/store',				array( 'as' => 'store_batch_history', 	'uses' => 'BatchFormController@store'));
+		Route::get ('/{id}', 				array( 'as' => 'show_batch_history', 	'uses' => 'BatchFormController@show'));
+		Route::get ('/{id}/edit/{stage}', 	array( 'as' => 'edit_batch_history', 	'uses' => 'BatchFormController@edit'));
+		Route::put ('/{id}/update/{stage}', array( 'as' => 'update_batch_history', 	'uses' => 'BatchFormController@update'));		
+		//Route::delete('/delete', 			array( 'as' => 'delete_batch_history', 	'uses' => 'BatchFormController@destroy'));
+	});
 
-		Route::get ('/', 					array( 'as' => 'batch_histories', 			'uses' => 'BatchFormController@index'));
-		Route::get ('/create', 				array( 'as' => 'create_batch_history', 		'uses' => 'BatchFormController@create'));
-		Route::get ('/start', 				array( 'as' => 'start_batch_history', 		'uses' => 'BatchFormController@start'));
-		Route::post('/store',				array( 'as' => 'store_batch_history', 		'uses' => 'BatchFormController@store'));
-		Route::get ('/{id}', 				array( 'as' => 'show_batch_history', 		'uses' => 'BatchFormController@show'));
-		Route::get ('/{id}/edit/{stage}', 	array( 'as' => 'edit_batch_history', 		'uses' => 'BatchFormController@edit'));
-		Route::put ('/{id}/update/{stage}', array( 'as' => 'update_batch_history', 		'uses' => 'BatchFormController@update'));		
-		//Route::delete('/delete', 			array( 'as' => 'delete_batch_history', 		'uses' => 'BatchFormController@destroy'));
+	// Product Build Form Group
+	Route::group (array('prefix' => 'product-build-form'), function()
+	{
+		Route::get ('/', 					array( 'as' => 'index_product_build_form',	'uses' => 'ProductBuildFormController@index'));
+		Route::get ('/create', 				array( 'as' => 'create_product_build_form', 'uses' => 'ProductBuildFormController@create'));
+		Route::get ('/start', 				array( 'as' => 'start_product_build_form',	'uses' => 'ProductBuildFormController@start'));
+		Route::post('/store',				array( 'as' => 'store_product_build_form',	'uses' => 'ProductBuildFormController@store'));
+		Route::get ('/{id}', 				array( 'as' => 'show_product_build_form', 	'uses' => 'ProductBuildFormController@show'));	
+		//Route::delete('/delete', 			array( 'as' => 'delete_product_build_form', 		'uses' => 'ProductBuildForm@destroy'));
 	});	
 });
 
@@ -90,8 +102,8 @@ Route::group (array ('before' => 'auth', 'prefix' => 'profile'), function () {
 |
 */
 Route::group(array('before' => 'auth', 'prefix' => 'billOfMaterials'), function () {
-	Route::get('/', array('as' => 'bill_of_materials', 'uses' => 'BillofMaterialsController@index'));
-	Route::get('/{alphanumeric}', array('as' => 'show_bill_of_materials', 'uses' => 'BillofMaterialsController@show'));
+	Route::get('/', array('as' => 'bill_of_materials', 'uses' => 'BillOfMaterialsController@index'));
+	Route::get('/{alphanumeric}', array('as' => 'show_bill_of_materials', 'uses' => 'BillOfMaterialsController@show'));
 });
 
 /*
