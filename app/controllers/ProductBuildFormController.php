@@ -101,7 +101,14 @@ class ProductBuildFormController extends BaseController
 	 */
 	public function show($id)
 	{
-		return 'Not Yet Implemented';
+		$pbf = ProductBuildForm::where('id', '=', $id)->first();
+
+		if(is_null($pbf))
+			return Redirect::to('forms/product-build-form')
+				->with('flash_notice', 'Could not find the specified Product Build Form')
+				->with('flash_type', 'failure');
+
+		return View::make('forms/product-build-form/show', array('pbf' => $pbf));
 	}
 	
 	/**

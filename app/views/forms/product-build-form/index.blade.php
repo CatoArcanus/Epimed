@@ -24,6 +24,7 @@
 				<tr>
 					<th>Final Product</th>
 					<th>Catalog #</th>
+					<th>Quantity</th>
 					<th>% Complete</th>
 					<th>---</th>					
 				</tr>
@@ -40,10 +41,13 @@
 							{{ $product->alphanumeric }}
 						</td>
 						<td>
-
+							{{ $pbf->quantity }}
 						</td>
 						<td>
 
+						</td>
+						<td>
+							<a class="btn btn-primary" href="{{ route('show_product_build_form', $pbf->id) }}"><i class="fa fa-book"></i> View</a>
 						</td>
 					</tr>
 				@endforeach
