@@ -47,7 +47,7 @@ Route::group (array('before' => 'auth', 'prefix' => 'forms'), function() {
 		Route::post('/store',				array( 'as' => 'store_batch_history', 		'uses' => 'BatchFormController@store'));
 		Route::get ('/{id}', 				array( 'as' => 'show_batch_history', 		'uses' => 'BatchFormController@show'));
 		Route::get ('/{id}/edit/{stage}', 	array( 'as' => 'edit_batch_history', 		'uses' => 'BatchFormController@edit'));
-		Route::put ('/{id}/update/{stage}', array( 'as' => 'update_batch_history', 		'uses' => 'BatchFormController@update'));		
+		Route::post ('/{id}/update/{stage}', array( 'as' => 'update_batch_history', 		'uses' => 'BatchFormController@update'));		
 		//Route::delete('/delete', 			array( 'as' => 'delete_batch_history', 		'uses' => 'BatchFormController@destroy'));
 	});	
 });

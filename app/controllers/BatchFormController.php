@@ -210,7 +210,6 @@ class BatchFormController extends BaseController {
 			case 'approve':
 				var_dump($input);
 				// validate
-				$batchPouchLabel = BatchPouchLabel::where('id', $input['batchPouchLabel'])->firstOrFail();
 				$batchGeneration = BatchGeneration::where('id', $input['batchGeneration'])->firstOrFail();
 				$rules = array(
 					'approved_by' 	=> 'required|exists:user,username',
@@ -273,23 +272,56 @@ class BatchFormController extends BaseController {
 					{
 						$batchPouchLabel = BatchPouchLabel::where('id', $input['batchPouchLabel'])->firstOrFail();
 						$batchPouchLabel->destruction_id = $destruction->id;
-						$batchPouchLabel->save();					
+						$batchPouchLabel->save();
 					}
 					if(array_key_exists('batchCartonLabel', $input))
 					{
 						$batchCartonLabel = BatchCartonLabel::where('id', $input['batchCartonLabel'])->firstOrFail();
 						$batchCartonLabel->destruction_id = $destruction->id;
-						$batchCartonLabel->save();					
+						$batchCartonLabel->save();
 					}
-										
+
 					// redirect			
-					return Redirect::to('forms/batch-history/'.$batch->id.'/edit/approve')
+					return Redirect::to('forms/batch-history/'.$batch->id.'/edit/destroy')
 						->with ('flash_notice', 'Destruction Created Successfully')
 						->with('flash_type', 'success');
 				}
 				break;
-			case 'burst':
+			case 'machine':
 				//TODO:
+				break;
+			case 'burst':
+				//get input
+				$input = Input::except('_token');
+				//validate
+				$rules = array(
+					
+				);
+				//validate each avatar in turn and then either store them or fail with a message
+				foreach ($input as $burstData) {
+					//validate
+					$validator = Validator::make($burstData, $rules);
+					//Get any relevant messages
+					$messages = $validator->messages();
+					if ($validator->fails()) {
+						//var_dump($burstData);
+						//var_dump($rules);
+						//die();
+						var_dump($messages);
+						die ('Validation failed for burst entry data');
+					} else {					
+						// store burstEntry
+						$burstEntry = new BatchBurstEntry;
+						$burstEntry->batch_id = $batch->id;
+						$burstEntry->time = $burstData['burst_time'];
+						$burstEntry->pressure = $burstData['burst_pressure'];
+						$burstEntry->location = $burstData['burst_location'];
+						if (!$burstEntry->save()) {
+							die ('OK');
+						}
+					}
+				}
+				die ('OK');
 				break;
 			case 'inspect':
 				//TODO:

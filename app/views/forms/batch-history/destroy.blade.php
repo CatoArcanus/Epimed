@@ -100,17 +100,17 @@
 				{{ Form::submit('Submit Destruction for this item', array('class' => 'btn btn-success btn-submit col-sm-offset-8')) }}
 			@else
 				<div class="form-group">
-					{{ Form::label('pouch_destroyed_by', 	'Undestroyed Labels Destroyed By:',				array('class' => 'col-sm-3 control-label form-inline')) }}
+					{{ Form::label('pouch_destroyed_by', 	'Undestroyed Labels Destroyed By:',				array('class' => 'col-sm-3 control-label form-inline', 'readonly' => '')) }}
 					<div class="col-sm-3">
-						{{ Form::text('pouch_destroyed_by', @$batch->batchPouchLabel->batchDestruction->destroyer->user->username,	array('class' => 'form-control form-inline')) }}
+						{{ Form::text('pouch_destroyed_by', @$batch->batchPouchLabel->batchDestruction->destroyer->user->username,	array('class' => 'form-control form-inline', 'readonly' => '')) }}
 					</div>
-					{{ Form::label('pouch_destroyed_date', 	'Date:',										array('class' => 'col-sm-1 control-label form-inline')) }}
+					{{ Form::label('pouch_destroyed_date', 	'Date:',										array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
 					<div class="col-sm-2">
-						{{ Form::text('pouch_destroyed_date', @$batch->batchPouchLabel->batchDestruction->date,						array('class' => 'form-control form-inline')) }}
+						{{ Form::text('pouch_destroyed_date', @$batch->batchPouchLabel->batchDestruction->date,						array('class' => 'form-control form-inline', 'readonly' => '')) }}
 					</div>
-					{{ Form::label('pouch_destroyed_#', 	'Destroyed#:',									array('class' => 'col-sm-1 control-label form-inline')) }}
+					{{ Form::label('pouch_destroyed_#', 	'Destroyed#:',									array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
 					<div class="col-sm-1">
-						{{ Form::text('pouch_destroyed_#', 	@$batch->batchPouchLabel->batchDestruction->amount,						array('class' => 'form-control form-inline')) }}
+						{{ Form::text('pouch_destroyed_#', 	@$batch->batchPouchLabel->batchDestruction->amount,						array('class' => 'form-control form-inline', 'readonly' => '')) }}
 					</div>
 				</div>			
 			@endif
@@ -175,17 +175,17 @@
 				{{ Form::submit('Submit Destruction for this item', array('class' => 'btn btn-success btn-submit col-sm-offset-8')) }}
 			@else
 				<div class="form-group">
-					{{ Form::label('carton_destroyed_by', 	'Undestroyed Labels Destroyed By:',				array('class' => 'col-sm-3 control-label form-inline')) }}
+					{{ Form::label('carton_destroyed_by', 	'Undestroyed Labels Destroyed By:',				array('class' => 'col-sm-3 control-label form-inline', 'readonly' => '')) }}
 					<div class="col-sm-3">
-						{{ Form::text('carton_destroyed_by', @$batch->batchCartonLabel->batchDestruction->destroyer->user->username,	array('class' => 'form-control form-inline')) }}
+						{{ Form::text('carton_destroyed_by', @$batch->batchCartonLabel->batchDestruction->destroyer->user->username,	array('class' => 'form-control form-inline', 'readonly' => '')) }}
 					</div>
-					{{ Form::label('carton_destroyed_date', 	'Date:',										array('class' => 'col-sm-1 control-label form-inline')) }}
+					{{ Form::label('carton_destroyed_date', 	'Date:',										array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
 					<div class="col-sm-2">
-						{{ Form::text('carton_destroyed_date', @$batch->batchCartonLabel->batchDestruction->date,						array('class' => 'form-control form-inline')) }}
+						{{ Form::text('carton_destroyed_date', @$batch->batchCartonLabel->batchDestruction->date,						array('class' => 'form-control form-inline', 'readonly' => '')) }}
 					</div>
-					{{ Form::label('carton_destroyed_#', 	'Destroyed#:',									array('class' => 'col-sm-1 control-label form-inline')) }}
+					{{ Form::label('carton_destroyed_#', 	'Destroyed#:',									array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
 					<div class="col-sm-1">
-						{{ Form::text('carton_destroyed_#', 	@$batch->batchCartonLabel->batchDestruction->amount,						array('class' => 'form-control form-inline')) }}
+						{{ Form::text('carton_destroyed_#', 	@$batch->batchCartonLabel->batchDestruction->amount,						array('class' => 'form-control form-inline', 'readonly' => '')) }}
 					</div>
 				</div>			
 			@endif

@@ -5,192 +5,171 @@
 @stop
 
 @section ('content')
-	<div class="bg-grey-warm text-primary">
+	<div class="bg-grey-warm text-primary">		
 		<div id="form_title" class="text-center">
 			<h4>FINAL PRODUCT BATCH HISTORY RECORD</h4>
-		</div>
+		</div>		
 	
 		<div id="form_subtitle" class="text-center">
 			<h6>IHR-013</h4>
-		</div>
+		</div>		
 	</div>
 	<hr>
-	<div>
-
-		{{ Form::open (array ('route' => 'store_batch_history', 'method' => 'post', 'class' => 'form-horizontal', 'role' => 'form')) }}	
-		
+	<div>	
+		{{ Form::open (array ('url' => '', 'method' => 'post', 'class' => 'form-horizontal', 'role' => 'form')) }}	
 			<div class="form-group">
 				{{ Form::label('final_product', 'Final Product', 	array('class' => 'col-sm-2 control-label form-inline text-primary')) }}
 				<div class="col-sm-4">
-					{{ Form::text('final_product', 	'',				array('class' => 'form-control form-inline')) }}
+					{{ Form::text('final_product', 	$product->name,				array('class' => 'form-control form-inline', 'readonly' => '')) }}
 				</div>
 				{{ Form::label('final_lot_#', 'Final Lot #:', 		array('class' => 'col-sm-2 control-label col-sm-offset-1 form-inline text-primary')) }}
 				<div class="col-sm-2">
-					{{ Form::text('final_lot_#', 	'',				array('class' => 'form-control form-inline')) }}
-				</div>
+					{{ Form::text('final_lot_#', 	$batch->lot,				array('class' => 'form-control form-inline', 'readonly' => '')) }}
+				</div>				
 			</div>
 			
 			<div class="form-group">
 				{{ Form::label('catalog_#', 'Catalog #', 			array('class' => 'col-sm-2 control-label form-inline text-primary')) }}
 				<div class="col-sm-4">
-					{{ Form::text('catalog_#', 	'',					array('class' => 'form-control form-inline')) }}
+					{{ Form::text('catalog_#', 	$product->alphanumeric,					array('class' => 'form-control form-inline', 'readonly' => '')) }}
 				</div>
 				{{ Form::label('final_quantity', 'Final Quantity',	array('class' => 'col-sm-2 control-label col-sm-offset-1 form-inline text-primary')) }}
 				<div class="col-sm-2">
-					{{ Form::text('final_quantity', 	'',			array('class' => 'form-control form-inline')) }}
+					{{ Form::text('final_quantity', 	@$batch->sterilization->quantity ,			array('class' => 'form-control form-inline', 'readonly' => '')) }}
+				</div>
+			</div>
+			{{-- "Todo add button to show BoM here" --}}
+			<div class="form-group">
+				{{ Form::label('component_product_#0', 'Componenet Product #',	array('class' => 'col-sm-3 control-label form-inline', 'readonly' => '')) }}
+				<div class="col-sm-3">
+					{{ Form::text('component_product_#0', 	'',					array('class' => 'form-control form-inline', 'readonly' => '')) }}
+				</div>
+				{{ Form::label('lot_#0', 'Lot #:',								array('class' => 'col-sm-2 control-label form-inline', 'readonly' => '')) }}
+				<div class="col-sm-2 col-sm-offset-1">
+					{{ Form::text('lot_#0', 	'',								array('class' => 'form-control form-inline', 'readonly' => '')) }}
 				</div>
 			</div>
 			
 			<div class="form-group">
-				{{ Form::label('component_product_#0', 'Componenet Product #',	array('class' => 'col-sm-3 control-label form-inline')) }}
+				{{ Form::label('component_product_#1', 'Componenet Product #',	array('class' => 'col-sm-3 control-label form-inline', 'readonly' => '')) }}
 				<div class="col-sm-3">
-					{{ Form::text('component_product_#0', 	'',					array('class' => 'form-control form-inline')) }}
+					{{ Form::text('component_product_#1', 	'',					array('class' => 'form-control form-inline', 'readonly' => '')) }}
 				</div>
-				{{ Form::label('lot_#0', 'Lot #:',								array('class' => 'col-sm-2 control-label form-inline')) }}
+				{{ Form::label('lot_#1', 'Lot #:',								array('class' => 'col-sm-2 control-label form-inline', 'readonly' => '')) }}
 				<div class="col-sm-2 col-sm-offset-1">
-					{{ Form::text('lot_#0', 	'',								array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
-			
-			<div class="form-group">
-				{{ Form::label('component_product_#1', 'Componenet Product #',	array('class' => 'col-sm-3 control-label form-inline')) }}
-				<div class="col-sm-3">
-					{{ Form::text('component_product_#1', 	'',					array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('lot_#1', 'Lot #:',								array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-2 col-sm-offset-1">
-					{{ Form::text('lot_#1', 	'',								array('class' => 'form-control form-inline')) }}
+					{{ Form::text('lot_#1', 	'',								array('class' => 'form-control form-inline', 'readonly' => '')) }}
 				</div>
 			</div>
 			
 			<hr>
-
+						
 			<div id="pouch_label" class="text-primary text-center">
 				<h4>Pouch Label</h4>
 			</div>
+			<?php $batchGenerations = @$batch->batchPouchLabel->batchGenerations or $batchGenerations = array();?>
+			@foreach($batchGenerations as $generation )
+				<div class="form-group">
+					{{ Form::label('pouch_generated_by'.$generation->id, 	'Generated By:',						array('class' => 'col-sm-2 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-4">
+						{{ Form::text('pouch_generated_by'.$generation->id, $generation->generator->user->username,	array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+					{{ Form::label('pouch_generated_date'.$generation->id, 	'Date:',								array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-2">
+						{{ Form::text('pouch_generated_date'.$generation->id,$generation->date,						array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+					{{ Form::label('pouch_generated_#'.$generation->id, 	'Generated#:',							array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-1">
+						{{ Form::text('pouch_generated_#'.$generation->id, 	$generation->amount,					array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+				</div>
 			
-			<div class="form-group">
-				{{ Form::label('pouch_generated_by0', 'Generated By:',	array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-4">
-					{{ Form::text('pouch_generated_by0', 	'',			array('class' => 'form-control form-inline')) }}
+				<div class="form-group">
+					{{ Form::label('pouch_approved'.$generation->id, 			'Approved For Use By:',							array('class' => 'col-sm-2 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-4">
+						{{ Form::text('pouch_approved_by'.$generation->id, 		@$generation->approval->approver->user->username,array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+					{{ Form::label('pouch_approved_date'.$generation->id, 		'Date:',										array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-2">
+						{{ Form::text('pouch_approved_date'.$generation->id, 	@$generation->approval->date,					array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+					{{ Form::label('pouch_approved_#'.$generation->id, 			'Used#:',										array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-1">
+						{{ Form::text('pouch_approved_#'.$generation->id, 		@$generation->used,								array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
 				</div>
-				{{ Form::label('pouch_generated_by_date0', 'Date:',		array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('pouch_generated_by_date0', 	'',		array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('pouch_generated_#0', 'Generated#:',		array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-1">
-					{{ Form::text('pouch_generated_#0', 	'',			array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
+			@endforeach
 
 			<div class="form-group">
-				{{ Form::label('pouch_approved_by0', 'Approved For Use By:',	array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-4">
-					{{ Form::text('pouch_approved_by0', 	'',					array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('pouch_approved_by_date0', 'Date:',				array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('pouch_approved_by_date0', 	'',				array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('pouch_approved_#0', 'Used#:',					array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-1">
-					{{ Form::text('pouch_approved_#0', 	'',						array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
-			
-			<div id="dynamic_pouch">
-
-			</div>
-			
-			<div class="form-group">
-				<div class="col-sm-1 col-sm-offset-10 col-xs-offset-8">
-					<a title="click to add another pouch generation" id="add_pouch_generation_btn" class="add_generation_btn btn btn-warning" data-counter="1" data-name="pouch">
-						<i class="fa fa-plus-circle"></i>
-					</a>
-				</div>
-			</div>
-			
-			<div class="form-group">
-				{{ Form::label('pouch_destroyed_by', 'Undestroyed Labels Destroyed By:',	array('class' => 'col-sm-3 control-label form-inline')) }}
+				{{ Form::label('pouch_destroyed_by', 	'Undestroyed Labels Destroyed By:',				array('class' => 'col-sm-3 control-label form-inline', 'readonly' => '')) }}
 				<div class="col-sm-3">
-					{{ Form::text('pouch_destroyed_by', 	'',								array('class' => 'form-control form-inline')) }}
+					{{ Form::text('pouch_destroyed_by', @$batch->batchPouchLabel->batchDestruction->destroyer->user->username,	array('class' => 'form-control form-inline', 'readonly' => '')) }}
 				</div>
-				{{ Form::label('pouch_destroyed_by_date', 'Date:',							array('class' => 'col-sm-1 control-label form-inline')) }}
+				{{ Form::label('pouch_destroyed_date', 	'Date:',										array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
 				<div class="col-sm-2">
-					{{ Form::text('pouch_destroyed_by_date', 	'',							array('class' => 'form-control form-inline')) }}
+					{{ Form::text('pouch_destroyed_date', @$batch->batchPouchLabel->batchDestruction->date,						array('class' => 'form-control form-inline', 'readonly' => '')) }}
 				</div>
-				{{ Form::label('pouch_destroyed_#', 'Destroyed#:',							array('class' => 'col-sm-1 control-label form-inline')) }}
+				{{ Form::label('pouch_destroyed_#', 	'Destroyed#:',									array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
 				<div class="col-sm-1">
-					{{ Form::text('pouch_destroyed_#', 	'',								array('class' => 'form-control form-inline')) }}
+					{{ Form::text('pouch_destroyed_#', 	@$batch->batchPouchLabel->batchDestruction->amount,						array('class' => 'form-control form-inline', 'readonly' => '')) }}
 				</div>
 			</div>
-
+						
 			<hr>
 			
 			<div id="carton_label" class="text-primary text-center">
 				<h4>Carton Label</h4>
 			</div>
+			<?php $batchGenerations = @$batch->batchCartonLabel->batchGenerations or $batchGenerations = array();?>
+			@foreach($batchGenerations as $generation )
+				<div class="form-group">
+					{{ Form::label('carton_generated_by'.$generation->id, 		'Generated By:',						array('class' => 'col-sm-2 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-4">
+						{{ Form::text('carton_generated_by'.$generation->id, 	$generation->generator->user->username,	array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+					{{ Form::label('carton_generated_date'.$generation->id, 	'Date:',								array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-2">
+						{{ Form::text('carton_generated_date'.$generation->id, 	$generation->date,						array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+					{{ Form::label('carton_generated_#'.$generation->id, 		'Generated#:',							array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-1">
+						{{ Form::text('carton_generated_#'.$generation->id, 	$generation->amount,					array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{{ Form::label('carton_approved_by'.$generation->id, 	'Approved For Use By:',							array('class' => 'col-sm-2 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-4">
+						{{ Form::text('carton_approved_by'.$generation->id, @$generation->approval->approver->user->username,array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+					{{ Form::label('carton_approved_date'.$generation->id, 'Date:',											array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-2">
+						{{ Form::text('carton_approved_date'.$generation->id, @$generation->approval->date,					array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+					{{ Form::label('carton_approved_#'.$generation->id, 	'Used#:',										array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
+					<div class="col-sm-1">
+						{{ Form::text('carton_approved_#'.$generation->id, 	@$generation->used,								array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+				</div>
+			@endforeach
 			
 			<div class="form-group">
-				{{ Form::label('carton_generated_by0', 'Generated By:',	array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-4">
-					{{ Form::text('carton_generated_by0', 	'',			array('class' => 'form-control form-inline')) }}
+				{{ Form::label('carton_destroyed_by', 		'Undestroyed Labels Destroyed By:',				array('class' => 'col-sm-3 control-label form-inline', 'readonly' => '')) }}
+				<div class="col-sm-3">					
+					{{ Form::text('carton_destroyed_by', 	@$batch->batchCartonLabel->batchDestruction->destroyer->user->username, 	array('class' => 'form-control form-inline', 'readonly' => '')) }}
 				</div>
-				{{ Form::label('carton_generated_by_date0', 'Date:',	array('class' => 'col-sm-1 control-label form-inline')) }}
+				{{ Form::label('carton_destroyed_date', 	'Date:',										array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
 				<div class="col-sm-2">
-					{{ Form::text('carton_generated_by_date0', 	'',		array('class' => 'form-control form-inline')) }}
+					{{ Form::text('carton_destroyed_date', 	@$batch->batchCartonLabel->batchDestruction->date,						array('class' => 'form-control form-inline', 'readonly' => '')) }}
 				</div>
-				{{ Form::label('carton_generated_#0', 'Generated#:',	array('class' => 'col-sm-1 control-label form-inline')) }}
+				{{ Form::label('carton_destroyed_#', 		'Destroyed#:',									array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
 				<div class="col-sm-1">
-					{{ Form::text('carton_generated_#0', 	'',			array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
-
-			<div class="form-group">
-				{{ Form::label('carton_approved_by0', 'Approved For Use By:',	array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-4">
-					{{ Form::text('carton_approved_by0', 	'',					array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('carton_approved_by_date0', 'Date:',				array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('carton_approved_by_date0', 	'',				array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('carton_approved_#0', 'Used#:',					array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-1">
-					{{ Form::text('carton_approved_#0', 	'',					array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
-
-			<div id="dynamic_carton">
-
-			</div>
-			
-			<div class="form-group">
-				<div class="col-sm-1 col-sm-offset-10 col-xs-offset-8">
-					<a title="click to add another carton generation" id="add_carton_generation_btn" class="add_generation_btn btn btn-warning" data-counter="1" data-name="carton">
-						<i class="fa fa-plus-circle"></i>
-					</a>
-				</div>
-			</div>
-
-			<div class="form-group">
-				{{ Form::label('carton_destroyed_by', 'Undestroyed Labels Destroyed By:',	array('class' => 'col-sm-3 control-label form-inline')) }}
-				<div class="col-sm-3">
-					{{ Form::text('carton_destroyed_by', 	'',								array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('carton_destroyed_by_date', 'Date:',						array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('carton_destroyed_by_date', 	'',							array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('carton_destroyed_#', 'Destroyed#:',						array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-1">
-					{{ Form::text('carton_destroyed_#', 	'',								array('class' => 'form-control form-inline')) }}
+					{{ Form::text('carton_destroyed_#', 	@$batch->batchCartonLabel->batchDestruction->amount,					array('class' => 'form-control form-inline', 'readonly' => '')) }}
 				</div>
 			</div>
 			
 			<hr>
 			
+			{{ Form::open (array('url' => '', 'method' => 'POST', 'class' => 'form-horizontal', 'role' => 'form')) }}	
 			<div class="form-group">
 				{{ Form::label('', 'Heat Seal:', array('class' => 'col-sm-2 control-label form-inline text-danger')) }}
 				{{ Form::label('target_burst_pressure', 'Target Burst Pressure:',	array('class' => 'col-sm-2 control-label form-inline')) }}
@@ -207,6 +186,46 @@
 				</div>
 			</div>
 			
+			@if(!$batch->burstEntries->isEmpty())
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>time</th>
+						<th>Sample #</th>
+						<th>Burst Pressure</th>
+						<th>Burst Location</th>
+						<th>Seal Transfer %</th>
+						<th>Wicking(present/absent)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php $i=1; $burstEntries = @$batch->burstEntries or $burstEntries = array();?>					
+					@foreach($burstEntries as $batchBurstEntry )
+						<tr>
+							<td>
+								{{ Form::text('burst_time'.$batchBurstEntry->id, 		$batchBurstEntry->time,		array('class' => 'form-control form-inline', 'readonly' => '')) }}
+							</td>
+							<td>
+								{{ Form::text('burst_sample_#'.$batchBurstEntry->id, 	$i,							array('class' => 'form-control form-inline', 'readonly' => '')) }}
+							</td>
+							<td>
+								{{ Form::text('burst_pressure'.$batchBurstEntry->id, 	$batchBurstEntry->pressure,	array('class' => 'form-control form-inline', 'readonly' => '')) }}
+							</td>
+							<td>
+								{{ Form::text('burst_location'.$batchBurstEntry->id, 	$batchBurstEntry->location,	array('class' => 'form-control form-inline', 'readonly' => '')) }}
+							</td>
+							<td>
+								{{ Form::text('burst_seal_transfer'.$batchBurstEntry->id, 'N/A',					array('class' => 'form-control form-inline', 'readonly' => '')) }}
+							</td>
+							<td>
+								{{ Form::text('burst_wicking'.$batchBurstEntry->id, 	'N/A',						array('class' => 'form-control form-inline', 'readonly' => '')) }}
+							</td>
+						</tr>
+						<?php $i++; ?>
+					@endforeach
+				</tbody>
+			</table>
+			@else
 			<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -219,24 +238,24 @@
 					</tr>
 				</thead>
 				<tbody id="dynamic_burst">
-					<tr>
+					<tr data-number="0">
 						<td>
-							{{ Form::text('burst_time0', '',			array('class' => 'form-control form-inline')) }}
+							<input class="form-control form-inline" name="burst_time" data-name="burst_time" rows="1" form="batch_burst" type="text" value="">
 						</td>
 						<td>
-							{{ Form::text('burst_sample_#0', '1',		array('class' => 'form-control form-inline', 'readonly' => '')) }}
+							<input class="form-control form-inline" name="burst_sample_#'0'" type="text" readonly="" value="1">
 						</td>
 						<td>
-							{{ Form::text('burst_pressure0', '',		array('class' => 'form-control form-inline')) }}
+							<input class="form-control form-inline" name="burst_pressure" data-name="burst_pressure" rows="1" form="batch_burst" type="text" value="">
 						</td>
 						<td>
-							{{ Form::text('burst_location0', '',		array('class' => 'form-control form-inline')) }}
+							<input class="form-control form-inline" name="burst_location" data-name="burst_location" rows="1" form="batch_burst" type="text" value="">
 						</td>
 						<td>
-							{{ Form::text('burst_seal_transfer0', '',	array('class' => 'form-control form-inline')) }}
+							<input class="form-control form-inline" name="burst_seal_transfer" data-name="burst_seal_transfer" rows="1" form="batch_burst" type="text" value="">
 						</td>
 						<td>
-							{{ Form::text('burst_wicking0', '',			array('class' => 'form-control form-inline')) }}
+							<input class="form-control form-inline" name="burst_wicking" data-name="burst_wicking" rows="1" form="batch_burst" type="text" value="">
 						</td>
 					</tr>
 					
@@ -250,257 +269,39 @@
 					</a>
 				</div>
 			</div>
-			
+			{{ HTML::decode (
+					Form::button (
+						'<i class="fa fa-cloud-upload"></i> Add Bursts to Batch',
+						array (
+							'id' => 'create_burst_batch',
+							'class' => 'btn btn-success btn-submit col-sm-offset-8',
+							'type' => 'button',
+							'data-batch' => $batch->id,
+							'data-type' => 'POST'
+						)
+					)
+				) }}
+			@endif
+			{{ Form::close (); }}
+			{{ Form::open (array ('url' => '', 'method' => 'post', 'class' => 'form-horizontal', 'role' => 'form')) }}	
 			<div id="machine_used" class="text-primary text-center">
 				<h4>Machine Used</h4>
 			</div>
 			
 			<div class="form-group">
-				{{ Form::label('machine_name', 'CE-002:',	array('class' => 'col-sm-2 col-sm-offset-1 control-label form-inline text-primary')) }}
-				<div class="col-sm-1">
-					{{ Form::radio('machine_name', 'CE-002', false ) }}
-				</div>				
-				{{ Form::label('target_burst_pressure', 'High Temp/Dwell:',	array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-1">
-					{{ Form::text('high_temp', '',		array('class' => 'form-control form-inline')) }}
-				</div>				
-				<div class="col-sm-1">
-					{{ Form::text('dwell', '',		array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
-			
-			<div class="form-group">
-				{{ Form::label('machine_name', 'CE-009:',	array('class' => 'col-sm-2 col-sm-offset-1 control-label form-inline text-primary')) }}
-				<div class="col-sm-1">
-					{{ Form::radio('machine_name', 'CE-009', false ) }}
-				</div>				
-				{{ Form::label('target_burst_pressure', 'Heat/Dwell/Pressure:',	array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-1">
-					{{ Form::text('high_temp', '',		array('class' => 'form-control form-inline')) }}
-				</div>				
-				<div class="col-sm-1">
-					{{ Form::text('dwell', '',		array('class' => 'form-control form-inline')) }}
-				</div>
-				<div class="col-sm-1">
-					{{ Form::text('pressure', '',		array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
-			
-			<div class="form-group">
-				{{ Form::label('machine_name', 'CE-029:',	array('class' => 'col-sm-2 col-sm-offset-1 control-label form-inline text-primary')) }}
-				<div class="col-sm-1">
-					{{ Form::radio('machine_name', 'CE-029', false ) }}
-				</div>				
-				{{ Form::label('target_burst_pressure', 'Heat/Dwell:',	array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-1">
-					{{ Form::text('high_temp', '',		array('class' => 'form-control form-inline')) }}
-				</div>				
-				<div class="col-sm-1">
-					{{ Form::text('dwell', '',		array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
-			
-			<div class="form-group">
-				{{ Form::label('machine_name', 'CE-030:',	array('class' => 'col-sm-2 col-sm-offset-1 control-label form-inline text-primary')) }}
-				<div class="col-sm-1">
-					{{ Form::radio('machine_name', 'CE-030', false ) }}
-				</div>				
-				{{ Form::label('target_burst_pressure', 'Heat/Dwell:',	array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-1">
-					{{ Form::text('high_temp', '',		array('class' => 'form-control form-inline')) }}
-				</div>				
-				<div class="col-sm-1">
-					{{ Form::text('dwell', '',		array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
-			
-			<div class="form-group">
-				{{ Form::label('machine_name', 'CE-376:',	array('class' => 'col-sm-2 col-sm-offset-1 control-label form-inline text-primary')) }}
-				<div class="col-sm-1">
-					{{ Form::radio('machine_name', 'CE-376', false ) }}
-				</div>				
-				{{ Form::label('target_burst_pressure', 'Heat/Dwell:',	array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-1">
-					{{ Form::text('high_temp', '',		array('class' => 'form-control form-inline')) }}
-				</div>				
-				<div class="col-sm-1">
-					{{ Form::text('dwell', '',		array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>			
-			
-			<br>
-			
-			<div class="form-group">
-				{{ Form::label('sealed_by0', 'Sealed By:',	array('class' => 'col-sm-2 col-sm-offset-1 control-label form-inline')) }}
-				<div class="col-sm-3">
-					{{ Form::text('sealed_by0', '',			array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('sealed_by_date0', 'Date:',	array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('sealed_by_date0', '',	array('class' => 'form-control form-inline')) }}					
-				</div>
-			</div>
-
-			<hr>
-
-			<div id="inspection" class="text-primary text-center">
-				<h4>FINAL QUALITY INSPECTION</h4>
-			</div>
-			
-			<div class="form-group">
-				{{ Form::label('target_burst_pressure', 'Sample Size Code Letter:',	array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('target_burst_pressure', 	'',						array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('alert_limit', 'Sample Size:',						array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('alert_limit', 	'',								array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('action_limit', '1% AQL Reject Level:',				array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('action_limit', 	'',								array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
-			
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>Characteristic</th>
-						<th># Rejected</th>
-						<th>Pass/Fail</th>
-						<th>Burst Inspected By(signature)</th>
-						<th>Date</th>
-					</tr>
-				</thead>
-				<tbody id="dynamic_burst">
-					<tr>
-						<td>
-							{{ Form::text('inspection_characteristic_heatSeal', 'Heat Seal',		array('class' => 'form-control form-inline', 'readonly' => '')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_rejected_heatSeal', '',						array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_pass_heatSeal', '',							array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_approval_heatSeal', '',						array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_date_heatSeal', '',							array('class' => 'form-control form-inline')) }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							{{ Form::text('inspection_characteristic_contents', 'Contents',			array('class' => 'form-control form-inline', 'readonly' => '')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_rejected_contents', '',						array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_pass_contents', '',							array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_approval_contents', '',						array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_date_contents', '',							array('class' => 'form-control form-inline')) }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							{{ Form::text('inspection_characteristic_particulate', 'Particulate',	array('class' => 'form-control form-inline', 'readonly' => '')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_rejected_particulate', '',					array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_pass_particulate', '',						array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_approval_particulate', '',					array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_date_particulate', '',						array('class' => 'form-control form-inline')) }}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							{{ Form::text('inspection_characteristic_burstStrength', 'Burst Strength',array('class' => 'form-control form-inline', 'readonly' => '')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_rejected_burstStrength', '',					array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_pass_burstStrength', '',						array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_approval_burstStrength', '',					array('class' => 'form-control form-inline')) }}
-						</td>
-						<td>
-							{{ Form::text('inspection_date_burstStrength', '',						array('class' => 'form-control form-inline')) }}
-						</td>
-					</tr>					
-				</tbody>
-			</table>
-			
-			<hr>
-
-			<div id="comments" class="text-primary text-center">
-				<h4>Comments</h4>
+				{{ Form::label('machine_'.@$batch->machineReadings[1]->machine->name, @$batch->machineReadings[1]->machine->name.':',	array('class' => 'col-sm-2 col-sm-offset-2 control-label form-inline')) }}
+					
+				@foreach($batch->machineReadings as $machineReading)
+					{{ Form::label('machine_'.$machineReading->name, $machineReading->type->type.':', array('class' => 'col-sm-1  control-label form-inline')) }}
+					<div class="col-sm-1">
+						{{ Form::text('high_temp', $machineReading->value,		array('class' => 'form-control form-inline', 'readonly' => '')) }}
+					</div>
+				@endforeach
+					
 			</div>
 						
-			<div>
-				{{ Form::textarea('comments', '', array('class' => 'form-control form-inline')) }}
-			</div>
-			
 			<hr>
 			
-			<div id="sterilization" class="text-primary text-center">
-				<h4>STERILIZATION INFORMATION / LOT DISPOSITION</h4>
-			</div>
-			
-			<div class="form-group">
-				{{ Form::label('sterlize_date', 'Date Sterlized:',				array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('sterlize_date', 	'',							array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('sterlize_sterlizer', 'Sterlizer:',				array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('sterlize_sterlizer', 	'',					array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('sterlize_workOrderNumber', 'Work Order Number:',array('class' => 'col-sm-2 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('sterlize_workOrderNumber', 	'',				array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('sterlize_quantity', 'Quantity:',				array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-1">
-					{{ Form::text('sterlize_quantity', 	'',						array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
-			
-			<div class="form-group">
-				{{ Form::label('release_employee', 'Released For Distrubtion:',	array('class' => 'col-sm-3 control-label form-inline')) }}
-				<div class="col-sm-3">
-					{{ Form::text('release_employee', 	'',						array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('release_employeeTitle', 'Title:',				array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('release_employeeTitle', 	'',					array('class' => 'form-control form-inline')) }}
-				</div>
-				{{ Form::label('release_date', 'Date:',							array('class' => 'col-sm-1 control-label form-inline')) }}
-				<div class="col-sm-2">
-					{{ Form::text('release_date', 	'',							array('class' => 'form-control form-inline')) }}
-				</div>
-			</div>
-			
-			<br>
-			
-			<div class="form-actions">
-				{{ Form::submit('Submit Batch History Record', array('class' => 'btn btn-success btn-submit col-sm-offset-8')) }}
-			</div>
-			
-
 			{{ Form::close (); }}
 		
 	</div>
