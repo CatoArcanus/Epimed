@@ -211,7 +211,6 @@ class BatchFormController extends BaseController {
 				var_dump($input);
 				// validate
 				$batchPouchLabel = BatchPouchLabel::where('id', $input['batchPouchLabel'])->firstOrFail();
-				$batchCartonLabel = BatchCartonLabel::where('id', $input['batchCartonLabel'])->firstOrFail();
 				$batchGeneration = BatchGeneration::where('id', $input['batchGeneration'])->firstOrFail();
 
 				$rules = array(
@@ -256,8 +255,10 @@ class BatchFormController extends BaseController {
 
 				//Process the validator based on the rules
 				$validator = Validator::make(Input::all(), $rules);
+				
 				//Get any messages
 				$messages = $validator->messages();
+				
 				//process the validator
 				if ($validator->fails()) {
 					return Redirect::to('forms/batch-history/'.$batch->id.'/edit/approve')
@@ -283,10 +284,39 @@ class BatchFormController extends BaseController {
 				//TODO:
 				break;
 			case 'sterlize':
-				//TODO:
+				var_dump($input);
+				// validate
+				$rules = array(
+					'sterilize_date' 			=> 'required|date',
+					'sterilize_sterilizer' 		=> 'required|exists:user, username',
+					'sterilize_workOrderNumber' => 'required|integer',
+					'sterilize_quantity' 		=> 'required|integer'
+					);
+				// Process the validator based on the rules
+				$validator = Validator::make(Input::all(), $rules);
+				// Get any messages
+				$messages = $validator -> messages();
+				// process the validator
+				if ($validator->fails())
+				{
+					return Redirect::to('forms/batch-history/'.$batch->id.'/edit/sterlize')
+						->with ('flash_notice', 'Batch Form sterilizer failed '.$messages)
+						->with('flash_type', 'failure');
+				} 
+				else 
+				{
+					// Get employee for sterilizing
+					$user = User::where('username', $input['sterilize_sterilizer'])->firstOrFail();
+					$employee = $user->employee;
+
+					// redirect
+					return Redirect::to('forms/batch-history/' .$batch->id. '/edit/sterlize')
+						->with ('flash_notice', 'Sterilization Created Successfully')
+						->with ('flash_type', 'success');
+				}
 				break;
 			case 'release':
-				//TODO:
+				//TODO
 				break;
 			default:
 				var_dump('404, not found');
