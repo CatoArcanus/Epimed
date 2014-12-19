@@ -33,15 +33,9 @@
 			<hr>
 			<div class="form-actions">
 				{{ Form::submit('Submit', array('class' => 'btn btn-success btn-submit col-sm-offset-10')) }}
-			</div>
-			{{--
-			<br>
-			<div class="form-actions">
-				{{ Form::submit('Submit Batch History And Continue with Generation', array('class' => 'btn btn-info btn-submit col-sm-offset-8')) }}
-			</div>
-			--}}			
+			</div>			
 
-			{{ Form::close (); }}		
+			{{ Form::close (); }}
 	</div>
  
 @stop

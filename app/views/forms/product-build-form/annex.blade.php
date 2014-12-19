@@ -24,7 +24,9 @@
 	<hr>
 
 	<div>
-		{{ Form::open (array ('route' => 'index_product_build_form', 'method' => 'get', 'class' => 'form-horizontal', 'role' => 'form')) }}
+		<?php $url = 'forms/product-build-form/'. $pbf->getKey() . '/update/annex'; ?>
+
+		{{ Form::open (array ('url' => $url, 'method' => 'post', 'class' => 'form-horizontal', 'role' => 'form')) }}
 			<?php $bom = $pbf->billOfMaterials; ?>
 			<?php $product = $bom->product; ?>
 
@@ -72,6 +74,11 @@
 								@foreach($batches as $batch)
 									{{ Form::text('', $batch->lot, array('class' => 'form-control form-inline', 'readonly' => 'true')) }}
 								@endforeach
+
+								<div class="form-group">
+									<div class="col-sm-4">{{ Form::text('add_' . $component->getKey(), '', array('class' => 'form-control form-inline')) }}</div>
+									<div class="col-sm-1">{{ Form::submit('Add', array('class' => 'btn btn-primary btn-submit')) }}</div>
+								</div>
 							</td>
 						</tr>
 					@endforeach
@@ -86,9 +93,9 @@
 
 			<div>
 				<?php $comments_text = ""; ?>
-				<?php $comments = @$pbf->commentBlock->comments or $comments = array();?>	
+				<?php $comments = @$pbf->commentBlock->comments or $comments = array(); ?>	
 				@foreach($comments as $comment)
-					<?php $comments_text = $comments_text.$comment->text.'\n'; ?>
+					<?php $comments_text = $comments_text . $comment->text . '\n'; ?>
 				@endforeach
 				{{ Form::textarea('comments', $comments_text, array('class' => 'form-control form-inline', 'readonly' => 'true')) }}
 			</div>

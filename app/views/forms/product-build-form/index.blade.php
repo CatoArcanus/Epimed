@@ -47,11 +47,12 @@
 
 						</td>
 						<td>
-							<a class="btn btn-primary" href="{{ route('show_product_build_form', $pbf->id) }}"><i class="fa fa-book"></i> View</a>
+							<a class="btn btn-primary" href="{{ route('show_product_build_form', $pbf->id) }}"><i class="fa fa-eye"></i> View</a>
+							<a class="btn btn-warning" href="{{ route('edit_product_build_form', array('id' => $pbf->id, 'stage' => 'annex')) }}"><i class="fa fa-pencil"></i> Add Component</a>
+							<a class="btn btn-success" href="{{ route('update_product_build_form', $pbf->id, 'approve') }}"><i class="fa fa-check"></i> Approve</a>
 						</td>
 					</tr>
 				@endforeach
-
 			</tbody>
 		</table>		
 	</div> 
