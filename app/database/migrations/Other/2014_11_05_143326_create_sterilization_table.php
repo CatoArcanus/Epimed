@@ -9,7 +9,7 @@
  * @author 		Michael Evans 	(Original Author) 	<khstennispro@gmail.com>
  * @author 		Tyler Reed 		(Revisor) 			<tylernathanreed@gmail.com>
  * @copyright 	2014 Epimed International
- * @version 	1.5 (12/10/14)
+ * @version 	1.6 (12/19/14)
  */
 
 //* Namespaces *//
@@ -37,7 +37,7 @@ class CreateSterilizationTable extends Migration
 
 			// Attributes
 			$table->dateTime('date');
-			$table->string('work_order', 10)			->unique();			
+			$table->string('work_order', 10)			->index();			
 			$table->smallInteger('quantity')->unsigned();
 
 			// Timestamps and Signatures

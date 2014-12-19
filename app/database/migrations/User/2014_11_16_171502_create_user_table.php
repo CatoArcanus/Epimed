@@ -9,7 +9,7 @@
  * @author 		Michael Evans 	(Original Author) 	<khstennispro@gmail.com>
  * @author 		Tyler Reed 		(Revisor) 			<tylernathanreed@gmail.com>
  * @copyright 	2014 Epimed International
- * @version 	1.3 (12/10/2014)
+ * @version 	1.4 (12/19/2014)
  */
 
 //* Namespaces *//
@@ -32,9 +32,9 @@ class CreateUserTable extends Migration
 			$table->increments('id');
 			
 			// Attributes
-			$table->string('username', 32)				->unique();
+			$table->string('username', 32)				->index();
 			$table->string('password', 60);	
-			$table->string('email', 48) 				->unique();
+			$table->string('email', 48) 				->index();
 			$table->string('first_name', 32);
 			$table->string('last_name', 32);
 

@@ -9,7 +9,7 @@
  * @author 		Michael Evans 	(Original Author) 	<khstennispro@gmail.com>
  * @author 		Tyler Reed 		(Revisor) 			<tylernathanreed@gmail.com>
  * @copyright 	2014 Epimed International
- * @version 	1.4 (12/10/2014)
+ * @version 	1.5 (12/19/2014)
  */
 
 //* Namespaces *//
@@ -32,15 +32,15 @@ class CreateMachineTable extends Migration
 			$table->increments('id');
 
 			// Attributes
-			$table->string('name', 6);
+			$table->string('name', 6)					->index();
 
 			// Timestamps and Signatures
 			$table->timestamps();
 			$table->softDeletes();
-			$table->integer('created_by')->unsigned()->index()->nullable();
-			$table->integer('updated_by')->unsigned()->index()->nullable();
-			$table->integer('deleted_by')->unsigned()->index()->nullable();
-			$table->integer('current_id')->unsigned()->index()->nullable();
+			$table->integer('created_by')->unsigned()	->index()->nullable();
+			$table->integer('updated_by')->unsigned()	->index()->nullable();
+			$table->integer('deleted_by')->unsigned()	->index()->nullable();
+			$table->integer('current_id')->unsigned()	->index()->nullable();
 		});
 	}
 

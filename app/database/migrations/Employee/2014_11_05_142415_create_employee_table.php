@@ -32,7 +32,7 @@ class CreateEmployeeTable extends Migration
 			$table->increments('id');
 			
 			// Foreign Keys
-			$table->integer('account_id')->unsigned()->index();
+			$table->integer('account_id') 	->unsigned()->index();
 			
 			// Attributes
 			$table->boolean('locked');			

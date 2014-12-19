@@ -9,7 +9,7 @@
  * @author 		Michael Evans 	(Original Author) 	<khstennispro@gmail.com>
  * @author 		Tyler Reed 		(Revisor) 			<tylernathanreed@gmail.com>
  * @copyright 	2014 Epimed International
- * @version 	1.6 (12/10/14)
+ * @version 	1.7 (12/19/14)
  */
 
 //* Namespaces *//
@@ -42,7 +42,7 @@ class CreateBatchTable extends Migration
 			$table->integer('comments_id')		->unsigned()->index()->nullable();
 
 			// Attributes
-			$table->integer('lot') 				->unsigned()->unique();
+			$table->integer('lot') 				->unsigned()->index();
 
 			// Timestamps and Signatures
 			$table->timestamps();

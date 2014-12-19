@@ -9,7 +9,7 @@
  * @author 		Michael Evans 	(Original Author) 	<khstennispro@gmail.com>
  * @author 		Tyler Reed 		(Revisor) 			<tylernathanreed@gmail.com>
  * @copyright 	2014 Epimed International
- * @version 	1.5 (12/11/14)
+ * @version 	1.6 (12/19/14)
  */
 
 //* Namespaces *//
@@ -35,7 +35,7 @@ class CreateProductTable extends Migration
 			$table->integer('revision_id')		->unsigned()->index();
 
 			// Attributes
-			$table->string('alphanumeric', 16)	->unique();
+			$table->string('alphanumeric', 16)	->index();
 			$table->string('name', 48);
 			$table->string('description', 64);
 
