@@ -211,6 +211,7 @@ class BatchFormController extends BaseController {
 				var_dump($input);
 				// validate
 				$batchGeneration = BatchGeneration::where('id', $input['batchGeneration'])->firstOrFail();
+
 				$rules = array(
 					'approved_by' 	=> 'required|exists:user,username',
   					'approved_date' => 'required|date',
@@ -233,34 +234,38 @@ class BatchFormController extends BaseController {
 					$batchGeneration->used = $input['approved_#'];
 					$batchGeneration->save();
 					$batchGeneration->approve($employee->id, $input['approved_date']);
+
 					// redirect			
 					return Redirect::to('forms/batch-history/'.$batch->id.'/edit/approve')
 						->with ('flash_notice', 'Approval Created Successfully')
 						->with('flash_type', 'success');
-				} 
+				} 				
 				break;
 			case 'destroy':
 				var_dump($input);
 				// validate
+				$batchPouchLabel = BatchPouchLabel::where('id', $input['batchPouchLabel'])->firstOrFail();
 				$rules = array(
 					'destroyed_by' 	 => 'required|exists:user,username',
   					'destroyed_date' => 'required|date',
   					'destroyed_#' 	 => 'required|integer'
 				);
+				die();
 
 				//Process the validator based on the rules
 				$validator = Validator::make(Input::all(), $rules);
+				
 				//Get any messages
 				$messages = $validator->messages();
+				
 				//process the validator
 				if ($validator->fails()) {
 					return Redirect::to('forms/batch-history/'.$batch->id.'/edit/approve')
 						->with ('flash_notice', 'Batch Form destruction failed '.$messages)
 						->with('flash_type', 'failure');
 				} else {
-			
-					// Get an employee for destruction
-					$user = User::where('username', $input['destroyed_by'])->firstOrFail();
+					// Get an employee for approvals
+					$user = User::where('username', $input['approved_by'])->firstOrFail();
 					$employee = $user->employee;
 					$destruction = new BatchDestruction;
 					$destruction->destroyed_by = $employee->id;
@@ -327,10 +332,39 @@ class BatchFormController extends BaseController {
 				//TODO:
 				break;
 			case 'sterlize':
-				//TODO:
+				var_dump($input);
+				// validate
+				$rules = array(
+					'sterilize_date' 			=> 'required|date',
+					'sterilize_sterilizer' 		=> 'required|exists:user, username',
+					'sterilize_workOrderNumber' => 'required|integer',
+					'sterilize_quantity' 		=> 'required|integer'
+					);
+				// Process the validator based on the rules
+				$validator = Validator::make(Input::all(), $rules);
+				// Get any messages
+				$messages = $validator -> messages();
+				// process the validator
+				if ($validator->fails())
+				{
+					return Redirect::to('forms/batch-history/'.$batch->id.'/edit/sterlize')
+						->with ('flash_notice', 'Batch Form sterilizer failed '.$messages)
+						->with('flash_type', 'failure');
+				} 
+				else 
+				{
+					// Get employee for sterilizing
+					$user = User::where('username', $input['sterilize_sterilizer'])->firstOrFail();
+					$employee = $user->employee;
+
+					// redirect
+					return Redirect::to('forms/batch-history/' .$batch->id. '/edit/sterlize')
+						->with ('flash_notice', 'Sterilization Created Successfully')
+						->with ('flash_type', 'success');
+				}
 				break;
 			case 'release':
-				//TODO:
+				//TODO
 				break;
 			default:
 				var_dump('404, not found');

@@ -13,7 +13,7 @@
  * @author 	   Tyler Reed (Revisor)			   <tylernathanreed@gmail.com>
  * @author 	   Monte Nichols (Revisor)		   <monte.nichols.ii@gmail.com>
  * @copyright  2014 Epimed International
- * @version    1.3 (11/29/14)
+ * @version    1.4 (12/18/14)
  */
 
 //* Namespaces *//
@@ -40,12 +40,22 @@ class ProductBuildForm extends \BaseModel
 	 */
 	protected $primaryKey = 'id';
 
+	//////////////////////////
+	//* Column Information *//
+	//////////////////////////
+	/**
+	 * Determines which Columns are Fillable. This protects against Mass Assignment.
+	 *
+	 * @var strings
+	 */
+	protected $fillable = array('revision_id', 'bom_id', 'quantity');
+
 	//////////////
 	//* Traits *//
 	//////////////
 	//* Approvable Trait *//
 	// Use the Approval Trait
-	use Approvable;
+	use \Approvable;
 
 	/**
 	 * The Foreign Key to the Approval Table
@@ -56,7 +66,7 @@ class ProductBuildForm extends \BaseModel
 
 	//* Commentable Trait *//
 	// Use the Commentable Trait
-	use Commentable;
+	use \Commentable;
 
 	/**
 	 * The Foreign Key to the Comment Block Table

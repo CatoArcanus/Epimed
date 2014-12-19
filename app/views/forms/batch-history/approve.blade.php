@@ -152,17 +152,17 @@
 					</div>
 				@else
 					<div class="form-group">
-						{{ Form::label('pouch_approved'.$generation->id, 			'Approved For Use By:',							array('class' => 'col-sm-2 control-label form-inline', 'readonly' => '')) }}
+						{{ Form::label('carton_approved'.$generation->id, 			'Approved For Use By:',							array('class' => 'col-sm-2 control-label form-inline', 'readonly' => '')) }}
 						<div class="col-sm-4">
-							{{ Form::text('pouch_approved_by'.$generation->id, 		@$generation->approval->approver->user->username,array('class' => 'form-control form-inline', 'readonly' => '')) }}
+							{{ Form::text('carton_approved_by'.$generation->id, 		@$generation->approval->approver->user->username,array('class' => 'form-control form-inline', 'readonly' => '')) }}
 						</div>
-						{{ Form::label('pouch_approved_date'.$generation->id, 		'Date:',										array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
+						{{ Form::label('carton_approved_date'.$generation->id, 		'Date:',										array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
 						<div class="col-sm-2">
-							{{ Form::text('pouch_approved_date'.$generation->id, 	@$generation->approval->date,					array('class' => 'form-control form-inline', 'readonly' => '')) }}
+							{{ Form::text('carton_approved_date'.$generation->id, 	@$generation->approval->date,					array('class' => 'form-control form-inline', 'readonly' => '')) }}
 						</div>
-						{{ Form::label('pouch_approved_#'.$generation->id, 			'Used#:',										array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
+						{{ Form::label('carton_approved_#'.$generation->id, 			'Used#:',										array('class' => 'col-sm-1 control-label form-inline', 'readonly' => '')) }}
 						<div class="col-sm-1">
-							{{ Form::text('pouch_approved_#'.$generation->id, 		@$generation->used,								array('class' => 'form-control form-inline', 'readonly' => '')) }}
+							{{ Form::text('carton_approved_#'.$generation->id, 		@$generation->used,								array('class' => 'form-control form-inline', 'readonly' => '')) }}
 						</div>
 					</div>
 				@endif

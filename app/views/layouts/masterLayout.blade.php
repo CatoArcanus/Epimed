@@ -34,7 +34,12 @@
 						</ul>
 						<ul class="nav navbar-nav pull-center">
 							<li>
-								<a class="navbar-brand" href="{{ route('batch_histories') }}"><i class="fa fa-book"></i> Batch History Form </a>
+								<a class="navbar-brand" href="{{ route('index_batch_history') }}"><i class="fa fa-book"></i> Batch History Form </a>
+							</li>
+						</ul>
+						<ul class="nav navbar-nav pull-center">
+							<li>
+								<a class="navbar-brand" href="{{ route('index_product_build_form') }}"><i class="fa fa-archive"></i> Product Build Forms</a>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav pull-center">
