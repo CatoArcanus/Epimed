@@ -10,7 +10,7 @@ class BatchFormController extends BaseController {
 	{
 		//$products = Product::all();
 		//$products = array();
-		$batches = Batch::paginate(10);
+		$batches = Batch::withoutTrash()->paginate(10);
 		//$products = Product::all();
 		//$b = Batch::find(1)->product;
 		//$batches = DB::table('batch')->get();
@@ -80,7 +80,7 @@ class BatchFormController extends BaseController {
 					
 			// redirect			
 			return Redirect::to('forms/batch-history')
-				->with ('flash_notice', 'Batch History Form Created Successfully')
+				->with('flash_notice', 'Batch History Form Created Successfully')
 				->with('flash_type', 'success');
 		}		
 	}
@@ -123,7 +123,7 @@ class BatchFormController extends BaseController {
 	 */
 	public function update($id, $stage)
 	{
-		$batch = Batch::where ('id', $id)->firstOrFail();
+		$batch = Batch::where('id', $id)->firstOrFail();
 		$product = $batch->product;
 		$input = Input::except('_token');
 		
@@ -242,7 +242,6 @@ class BatchFormController extends BaseController {
 				} 				
 				break;
 			case 'destroy':
-				var_dump($input);
 				// validate
 				$batchPouchLabel = BatchPouchLabel::where('id', $input['batchPouchLabel'])->firstOrFail();
 				$rules = array(
@@ -250,7 +249,6 @@ class BatchFormController extends BaseController {
   					'destroyed_date' => 'required|date',
   					'destroyed_#' 	 => 'required|integer'
 				);
-				die();
 
 				//Process the validator based on the rules
 				$validator = Validator::make(Input::all(), $rules);

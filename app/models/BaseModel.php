@@ -23,8 +23,14 @@ use Illuminate\Database\Eloquent\Builder;
 //////////////////
 //* Base Model *//
 //////////////////
-abstract class BaseModel extends Eloquent
-{	
+abstract class BaseModel extends Eloquent implements \TraceableInterface
+{
+    //////////////
+    //* Traits *//
+    //////////////
+    // All Models should be Traceable
+    use Traceable;
+
 	/**
      * Provide an attributes to object map
      *
@@ -128,83 +134,4 @@ abstract class BaseModel extends Eloquent
  
         return $saved;
     }
-    
-	
-	// All Models are Soft Deleted
-	use SoftDeletingTrait;
-		
-	/**
-	 * The Booting Method of the Model
-	 *
-	 * @return void
-	 */
-	public static function boot()
-	{
-		// Call the Inherited Method
-		parent::boot();
-
-		// Register the Updating Event
-		/**
-		 * This Application uses an Insert-Only Approach for significant
-		 * changes to the Data. As such, when a Model is being updated,
-		 * the default behavior needs to be overridden so that a copy of
-		 * the original data is created, stored, deleted, and referenced
-		 * to the most up to date version of the Model.
-		 *
-		 * Given all of the timestamps that the models will contain, there
-		 * are certain things that may be derived:
-		 *
-		 * Current Model:
-		 *  - 'created_at' : When the Lifespan of this Model began
-		 *  - 'updated_at' : When the most recent change occured to this Model
-		 *  - 'deleted_at' : When the Lifespan of this Model ended
-		 *  - 'current_id' : NULL, as this is used for older versions of this Model
-		 *
-		 * Older Models:
-		 *  - 'created_at' : When this version of this Model became current
-		 *  - 'updated_at' : When the most recent change occured during the time frame of this older Model
-		 *  - 'deleted_at' : When this version of this Model became obsolete
-		 *  - 'current_id' : The id of the current version of this Model
-		 *
-		 * To summarize, there is one main model, which represents some data,
-		 * and it is always kept up to date. When significant changes to the
-		 * data occur, a duplicate model (with the old data) is created, which
-		 * serves as a time-snippet of the main model.
-		 *
-		 * Note: In the 'updating' event, the timestamps have not been updated yet
-		 */
-		/*
-		self::updating(function($model)
-		{
-			// Determine the Original Information
-			$original = $model->getOriginal();
-
-			// Create the original version of the Model
-			$original = self::create($original);
-
-			// Assign the 'current_id' reference
-			$original->current_id = $model->getKey();
-
-			// Determine the Previous time frame of this Model
-			$previous = self::where('current_id', '=', $model->getKey())->orderBy('deleted_at', 'desc')->first();
-
-			// Assign the 'created_at' timestamp to be when this Model was current information
-			/**
-			 * There are two possiblities here:
-			 * 1) No previous time frame exists, meaning no significant change has taken place
-			 *    -> In this case, the first time frame starts at the same time the original Model did
-			 * 2) A previous time frame exists, meaning a significant change has already taken place
-			 *    -> In this case, the time frame began when the previous one ended.
-			 */
-		/*	$original->created_at = $previous != null ? $previous->deleted_at : $model->created_at;
-
-			// Assigned 'updated_at' timestamp to be when the Model was recently changes (WITHIN THIS TIMEFRAME)
-			if($model->updated_at < $original->created_at)
-				$original->updated_at = null;
-
-			// Assigned the 'deleted_at' timestamp (which is right now!)
-			$original->save();
-			$original->delete();
-		});*/
-	}
 }
