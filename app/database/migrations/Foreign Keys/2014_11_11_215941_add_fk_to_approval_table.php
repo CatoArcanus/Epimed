@@ -47,7 +47,7 @@ class AddFkToApprovalTable extends Migration
 		Schema::table('approval', function(Blueprint $table)
 		{
 			// Drop Foreign Keys
-			$table->dropForeign('fk_approval_approver');
+			$table->dropForeign('fk_approval_approved_by');
 
 			$table->dropForeign('fk_approval_created_by');
 			$table->dropForeign('fk_approval_updated_by');
